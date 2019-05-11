@@ -31,7 +31,7 @@ export class Login extends Component {
     const { mail, password } = this.state;
     const data = { mail, password };
     this.props.setUser(data, this.leaveError, () => {
-      this.props.history.push("MapView");
+      this.props.navigation.navigate("MapFlow");
     });
   }
 
@@ -63,7 +63,7 @@ export class Login extends Component {
           <Card>
             <View
               style={{
-                minWidth: 250,
+                width: 250,
                 padding: 20
               }}
             >

@@ -8,7 +8,7 @@ import {
 } from "react-navigation";
 import Login from "../components/login/Login";
 import Inscription from "../components/login/Inscription";
-import { map } from "../components/map/map";
+import MapPlace from "../components/map/MapPlace";
 
 const LoginStack = createStackNavigator(
   {
@@ -33,22 +33,20 @@ const LoginStack = createStackNavigator(
 const MapStack = createStackNavigator(
   {
     MapView: {
-      screen: map,
+      screen: MapPlace,
       navigationOptions: {
         title: "Extraordinary places"
       }
     }
   },
-  {
-    initialRouteName: "LoginView",
-    headerLayoutPreset: "center"
-  }
+  { headerLayoutPreset: "center" }
 );
 
 export default createAppContainer(
   createSwitchNavigator(
     {
-      LoginFlow: LoginStack
+      LoginFlow: LoginStack,
+      MapFlow: MapStack
     },
     {
       initialRouteName: "LoginFlow"

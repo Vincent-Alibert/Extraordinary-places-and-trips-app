@@ -4,43 +4,64 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Card, Button } from "react-native-material-ui";
 import { TextField } from "react-native-material-textfield";
+// actions
+import createUser from "../../actions/login/createUser";
 // styles
-import commonStyles from "../../assets/styles/commonsStyles";
+import commonsStyles from "../../assets/styles/commonsStyles";
 
-export class Login extends Component {
+export class Inscription extends Component {
   static propTypes = {};
 
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
-      email: "",
+      pseudo: "",
+      mail: "",
       password: "",
-      passwordVerif: ""
+      passwordVerif: "",
+      messageError: null
     };
+    this.createUser = this.createUser.bind(this);
+    this.leaveError = this.leaveError.bind(this);
+  }
+
+  createUser() {
+    const { pseudo, mail, password, passwordVerif } = this.state;
+    const data = { pseudo, mail, password, passwordVerif };
+    if (password === passwordVerif) {
+      this.props.createUser(data, this.leaveError, () => {
+        this.props.navigation.navigate("MapFlow");
+      });
+    } else {
+      this.leaveError("Les deux mots de passe doivent être identiques.");
+    }
+  }
+
+  leaveError(message) {
+    this.setState({ messageError: message });
   }
 
   render() {
-    const { email, name, passwordVerif, password } = this.state;
+    const { mail, pseudo, passwordVerif, password, messageError } = this.state;
     return (
-      <View style={{ flex: 1, ...commonStyles.centerCenter }}>
+      <View style={{ flex: 1, ...commonsStyles.centerCenter }}>
         <Card>
           <View
             style={{
-              minWidth: 250,
+              width: 250,
               padding: 20
             }}
           >
             <TextField
-              label="Nom"
-              value={name}
-              onChangeText={name => this.setState({ name })}
+              label="Pseudo"
+              value={pseudo}
+              onChangeText={pseudo => this.setState({ pseudo })}
               containerStyle={{ marginBottom: 5 }}
             />
             <TextField
-              label="Email"
-              value={email}
-              onChangeText={email => this.setState({ email })}
+              label="mail"
+              value={mail}
+              onChangeText={mail => this.setState({ mail })}
               containerStyle={{ marginBottom: 5 }}
             />
             <TextField
@@ -59,15 +80,25 @@ export class Login extends Component {
               <Button
                 upperCase={false}
                 style={{
-                  container: { ...commonStyles.button },
+                  container: { ...commonsStyles.button },
                   text: {
-                    color: commonStyles.colors.white
+                    color: commonsStyles.colors.white
                   }
                 }}
                 text="Valider"
-                onPress={() => {}}
+                onPress={() => this.createUser()}
               />
             </View>
+            {messageError && (
+              <View
+                style={{
+                  marginTop: commonsStyles.spacing.unit,
+                  alignItems: "center"
+                }}
+              >
+                <Text style={commonsStyles.messageError}>{messageError}</Text>
+              </View>
+            )}
           </View>
         </Card>
       </View>
@@ -75,8 +106,13 @@ export class Login extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  user: state.user
+});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { createUser };
 
-export default Login;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Inscription);

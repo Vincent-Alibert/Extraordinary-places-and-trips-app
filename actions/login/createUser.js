@@ -1,13 +1,13 @@
 import axios from "../../config/api";
 import actions from "../index-types";
 
-export default function setCurrentUser(data, leaveError, callback) {
+export default function createUser(data, leaveError, callback) {
   return function(dispatch) {
     axios
-      .post("api/v1/users/login", data)
+      .post("api/v1/users/create", data)
       .then(respUser => {
         dispatch({
-          type: actions.SET_USER,
+          type: actions.CREATE_USER,
           payload: respUser.data
         });
         axios.defaults.headers.common["api-token"] = respUser.data.jwt_token;
