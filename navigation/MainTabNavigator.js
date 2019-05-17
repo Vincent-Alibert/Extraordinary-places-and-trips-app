@@ -9,6 +9,7 @@ import {
 import Login from "../components/login/Login";
 import Inscription from "../components/login/Inscription";
 import MapPlace from "../components/map/MapPlace";
+import Burger from "../components/commons/Burger";
 
 const LoginStack = createStackNavigator(
   {
@@ -35,7 +36,8 @@ const MapStack = createStackNavigator(
     MapView: {
       screen: MapPlace,
       navigationOptions: {
-        title: "Extraordinary places"
+        title: "Extraordinary places",
+        headerRight: <Burger />
       }
     }
   },
@@ -49,7 +51,7 @@ export default createAppContainer(
       MapFlow: MapStack
     },
     {
-      initialRouteName: "LoginFlow"
+      initialRouteName: "MapFlow"
     }
   )
 );
