@@ -33,11 +33,21 @@ export default class Burger extends Component {
           style={{}}
           button={<Icon name="more-horiz" onPress={this.showMenu} />}
         >
-          <MenuItem onPress={this.hideMenu}>Carte des rêves</MenuItem>
+          <MenuItem onPress={() => this.props.navigation.navigate("MapView")}>
+            Carte des rêves
+          </MenuItem>
           <MenuDivider />
-          <MenuItem onPress={this.hideMenu}>Rêves par catégories</MenuItem>
+          <MenuItem
+            onPress={() => this.props.navigation.navigate("DreamsByCatView")}
+          >
+            Rêves par catégories
+          </MenuItem>
           <MenuDivider />
-          <MenuItem onPress={this.hideMenu}>Ajouter un rêve</MenuItem>
+          <MenuItem
+            onPress={() => this.props.navigation.navigate("DreamCreateView")}
+          >
+            Ajouter un rêve
+          </MenuItem>
           {/* <MenuItem onPress={this.hideMenu} disabled>
             Menu item 3
           </MenuItem> */}
