@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
-import { Card, Button } from "react-native-material-ui";
+import { Text, View } from "react-native";
 import Menu, { MenuItem, MenuDivider } from "react-native-material-menu";
+import { Icon } from "react-native-elements";
 
 export default class Burger extends Component {
   _menu = null;
@@ -20,18 +20,27 @@ export default class Burger extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          marginRight: 10
+        }}
+      >
         <Menu
           ref={this.setMenuRef}
-          button={<Text onPress={this.showMenu}>...</Text>}
+          style={{}}
+          button={<Icon name="more-horiz" onPress={this.showMenu} />}
         >
-          <MenuItem onPress={this.hideMenu}>Menu item 1</MenuItem>
-          <MenuItem onPress={this.hideMenu}>Menu item 2</MenuItem>
-          <MenuItem onPress={this.hideMenu} disabled>
-            Menu item 3
-          </MenuItem>
+          <MenuItem onPress={this.hideMenu}>Carte des rêves</MenuItem>
           <MenuDivider />
-          <MenuItem onPress={this.hideMenu}>Menu item 4</MenuItem>
+          <MenuItem onPress={this.hideMenu}>Rêves par catégories</MenuItem>
+          <MenuDivider />
+          <MenuItem onPress={this.hideMenu}>Ajouter un rêve</MenuItem>
+          {/* <MenuItem onPress={this.hideMenu} disabled>
+            Menu item 3
+          </MenuItem> */}
         </Menu>
       </View>
     );

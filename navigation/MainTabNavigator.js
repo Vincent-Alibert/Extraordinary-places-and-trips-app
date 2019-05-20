@@ -9,6 +9,8 @@ import {
 import Login from "../components/login/Login";
 import Inscription from "../components/login/Inscription";
 import MapPlace from "../components/map/MapPlace";
+import DreamsByCat from "../components/dreams/DreamsByCat";
+import DreamsForOneCat from "../components/dreams/DreamsForOneCat";
 import Burger from "../components/commons/Burger";
 
 const LoginStack = createStackNavigator(
@@ -44,11 +46,32 @@ const MapStack = createStackNavigator(
   { headerLayoutPreset: "center" }
 );
 
+const DreamsListStack = createStackNavigator(
+  {
+    DreamsByCatView: {
+      screen: DreamsByCat,
+      navigationOptions: {
+        title: "Vos rêves",
+        headerRight: <Burger />
+      }
+    },
+    DreamsForOneCatView: {
+      screen: DreamsForOneCat,
+      navigationOptions: {
+        title: "NAME OF CAT",
+        headerRight: <Burger />
+      }
+    }
+  },
+  { headerLayoutPreset: "center" }
+);
+
 export default createAppContainer(
   createSwitchNavigator(
     {
       LoginFlow: LoginStack,
-      MapFlow: MapStack
+      MapFlow: MapStack,
+      DreamsCatFlow: DreamsListStack
     },
     {
       initialRouteName: "MapFlow"
