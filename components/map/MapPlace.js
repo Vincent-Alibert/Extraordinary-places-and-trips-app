@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { MapView } from "expo";
 import { Marker } from "react-native-maps";
+import Burger from "../commons/Burger";
 // actions
 import getAllDreams from "../../actions/dreams/getAllDreams";
 
@@ -13,8 +14,15 @@ const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 10;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-export class MapPlace extends Component {
+class MapPlace extends Component {
   static propTypes = {};
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "Extraordinary places",
+      /* These values are used instead of the shared configuration! */
+      headerRight: <Burger navigation={navigation} />
+    };
+  };
   constructor(props) {
     super(props);
     this.state = { messageError: null, isLoading: false };

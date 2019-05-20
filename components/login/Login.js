@@ -16,7 +16,9 @@ import commonsStyles from "../../assets/styles/commonsStyles";
 
 export class Login extends Component {
   static propTypes = {};
-
+  static navigationOptions = {
+    title: null
+  };
   constructor(props) {
     super(props);
     this.state = {

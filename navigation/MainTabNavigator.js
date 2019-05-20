@@ -20,16 +20,10 @@ import Burger from "../components/commons/Burger";
 const LoginStack = createStackNavigator(
   {
     LoginView: {
-      screen: Login,
-      navigationOptions: {
-        header: null
-      }
+      screen: Login
     },
     InscriptionView: {
-      screen: Inscription,
-      navigationOptions: {
-        title: "Inscription"
-      }
+      screen: Inscription
     }
   },
   {
@@ -40,11 +34,7 @@ const LoginStack = createStackNavigator(
 const MapStack = createStackNavigator(
   {
     MapView: {
-      screen: MapPlace,
-      navigationOptions: {
-        title: "Extraordinary places",
-        headerRight: <Burger />
-      }
+      screen: MapPlace
     }
   },
   { headerLayoutPreset: "center" }
@@ -53,18 +43,10 @@ const MapStack = createStackNavigator(
 const DreamsListStack = createStackNavigator(
   {
     DreamsByCatView: {
-      screen: DreamsByCat,
-      navigationOptions: {
-        title: "Vos rêves",
-        headerRight: <Burger />
-      }
+      screen: DreamsByCat
     },
     DreamsForOneCatView: {
-      screen: DreamsForOneCat,
-      navigationOptions: {
-        title: "NAME OF CAT",
-        headerRight: <Burger />
-      }
+      screen: DreamsForOneCat
     }
   },
   { headerLayoutPreset: "center", initialRouteName: "DreamsByCatView" }
@@ -73,25 +55,13 @@ const DreamsListStack = createStackNavigator(
 const DreamStack = createStackNavigator(
   {
     DreamView: {
-      screen: Dream,
-      navigationOptions: {
-        title: "Détail",
-        headerRight: <Burger />
-      }
+      screen: Dream
     },
     DreamCreateView: {
-      screen: DreamEdit,
-      navigationOptions: {
-        title: "Création du rêve",
-        headerRight: <Burger />
-      }
+      screen: DreamEdit
     },
     DreamEditView: {
-      screen: DreamCreate,
-      navigationOptions: {
-        title: "Édition du rêve",
-        headerRight: <Burger />
-      }
+      screen: DreamCreate
     }
   },
   { headerLayoutPreset: "center", initialRouteName: "DreamView" }
@@ -106,7 +76,7 @@ export default createAppContainer(
       DreamFlow: DreamStack
     },
     {
-      initialRouteName: "MapFlow"
+      initialRouteName: "DreamsCatFlow"
     }
   )
 );

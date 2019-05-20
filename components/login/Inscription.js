@@ -11,7 +11,9 @@ import commonsStyles from "../../assets/styles/commonsStyles";
 
 export class Inscription extends Component {
   static propTypes = {};
-
+  static navigationOptions = {
+    title: "Inscription"
+  };
   constructor(props) {
     super(props);
     this.state = {
