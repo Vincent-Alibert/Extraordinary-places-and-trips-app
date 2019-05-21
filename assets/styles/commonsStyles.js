@@ -26,6 +26,14 @@ const commonsStyles = {
   },
   spacing: {
     unit: 5
+  },
+  dream: {
+    section: {
+      paddingBottom: 5,
+      paddingTOp: 5,
+      paddingLeft: 10,
+      paddingRight: 10
+    }
   }
 };
 

@@ -35,6 +35,9 @@ const MapStack = createStackNavigator(
   {
     MapView: {
       screen: MapPlace
+    },
+    DreamView: {
+      screen: Dream
     }
   },
   { headerLayoutPreset: "center" }
@@ -45,11 +48,28 @@ const DreamsListStack = createStackNavigator(
     DreamsByCatView: {
       screen: DreamsByCat
     },
-    DreamsForOneCatView: {
-      screen: DreamsForOneCat
+    DreamView: {
+      screen: Dream
     }
   },
   { headerLayoutPreset: "center", initialRouteName: "DreamsByCatView" }
+);
+
+const DreamsForOneCatStack = createStackNavigator(
+  {
+    DreamsForOneCatView: {
+      screen: DreamsForOneCat
+    },
+    DreamView: {
+      screen: Dream
+    }
+  },
+  {
+    headerMode: "screen",
+    headerLayoutPreset: "center",
+    headerBackTitleVisible: true,
+    initialRouteName: "DreamsForOneCatView"
+  }
 );
 
 const DreamStack = createStackNavigator(
@@ -57,14 +77,21 @@ const DreamStack = createStackNavigator(
     DreamView: {
       screen: Dream
     },
-    DreamCreateView: {
-      screen: DreamEdit
-    },
+
     DreamEditView: {
       screen: DreamCreate
     }
   },
   { headerLayoutPreset: "center", initialRouteName: "DreamView" }
+);
+
+const DreamCreateStack = createStackNavigator(
+  {
+    DreamCreateView: {
+      screen: DreamEdit
+    }
+  },
+  { headerLayoutPreset: "center", initialRouteName: "DreamCreateView" }
 );
 
 export default createAppContainer(
@@ -73,10 +100,12 @@ export default createAppContainer(
       LoginFlow: LoginStack,
       MapFlow: MapStack,
       DreamsCatFlow: DreamsListStack,
-      DreamFlow: DreamStack
+      DreamFlow: DreamStack,
+      DreamCreateFlow: DreamCreateStack,
+      DreamsForOneCatFlow: DreamsForOneCatStack
     },
     {
-      initialRouteName: "DreamsCatFlow"
+      initialRouteName: "DreamFlow"
     }
   )
 );

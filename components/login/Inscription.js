@@ -51,32 +51,32 @@ export class Inscription extends Component {
           <View
             style={{
               width: 250,
-              padding: 20
+              padding: commonsStyles.spacing.unit * 4
             }}
           >
             <TextField
               label="Pseudo"
               value={pseudo}
               onChangeText={pseudo => this.setState({ pseudo })}
-              containerStyle={{ marginBottom: 5 }}
+              containerStyle={{ marginBottom: commonsStyles.spacing.unit }}
             />
             <TextField
               label="mail"
               value={mail}
               onChangeText={mail => this.setState({ mail })}
-              containerStyle={{ marginBottom: 5 }}
+              containerStyle={{ marginBottom: commonsStyles.spacing.unit }}
             />
             <TextField
               label="Mot de passe"
               value={password}
               onChangeText={password => this.setState({ password })}
-              containerStyle={{ marginBottom: 5 }}
+              containerStyle={{ marginBottom: commonsStyles.spacing.unit }}
             />
             <TextField
               label="Vérification mot de passe"
               value={passwordVerif}
               onChangeText={passwordVerif => this.setState({ passwordVerif })}
-              containerStyle={{ marginBottom: 30 }}
+              containerStyle={{ marginBottom: commonsStyles.spacing.unit * 6 }}
             />
             <View style={{ alignItems: "center" }}>
               <Button

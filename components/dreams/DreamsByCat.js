@@ -95,9 +95,9 @@ export class DreamsByCat extends Component {
     return (
       <ScrollView
         style={{
-          paddingLeft: 10,
-          paddingRight: 10,
-          paddingBottom: 10
+          paddingLeft: commonsStyles.spacing.unit * 2,
+          paddingRight: commonsStyles.spacing.unit * 2,
+          paddingBottom: commonsStyles.spacing.unit * 2
         }}
       >
         {objectFormated && arrayCat ? (
@@ -105,15 +105,19 @@ export class DreamsByCat extends Component {
           arrayCat.map(cat => (
             <View
               style={{
-                paddingTop: 10,
-                paddingBottom: 10
+                paddingTop: commonsStyles.spacing.unit * 2,
+                paddingBottom: commonsStyles.spacing.unit * 2
               }}
               key={cat}
             >
               <View style={{ flexDirection: "row" }}>
                 <Text style={{ flex: 4 }}>{cat}</Text>
                 <Text
-                  onPress={() => console.log("pressed")}
+                  onPress={() =>
+                    this.props.navigation.navigate("DreamsForOneCatView", {
+                      categorie: cat
+                    })
+                  }
                   style={{ flex: 1, color: commonsStyles.colors.primary }}
                 >
                   Tout voir
@@ -123,13 +127,18 @@ export class DreamsByCat extends Component {
               <Grid>
                 {objectFormated[cat].map(dream => (
                   <Col
-                    onPress={() => this.props.navigation.navigate("DreamView")}
+                    onPress={() =>
+                      this.props.navigation.navigate("DreamView", {
+                        name: dream.name,
+                        id: dream.idDream
+                      })
+                    }
                     key={dream.idDream}
                   >
                     <Card
                       containerStyle={{
                         height: 80,
-                        padding: 5,
+                        padding: commonsStyles.spacing.unit,
                         flex: 1,
                         justifyContent: "center",
                         alignItems: "center"
@@ -152,10 +161,10 @@ export class DreamsByCat extends Component {
         ) : (
           <Text
             style={{
-              paddingTop: 30,
-              paddingLeft: 10,
-              paddingRight: 10,
-              paddingBottom: 10
+              paddingTop: commonsStyles.spacing.unit * 6,
+              paddingLeft: commonsStyles.spacing.unit * 2,
+              paddingRight: commonsStyles.spacing.unit * 2,
+              paddingBottom: commonsStyles.spacing.unit * 2
             }}
           >
             Chargement en cours

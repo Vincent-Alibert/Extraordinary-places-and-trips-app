@@ -48,8 +48,8 @@ export class Login extends Component {
         <View
           style={{
             flex: 1,
-            paddingTop: 40,
-            paddingBottom: 40,
+            paddingTop: commonsStyles.spacing.unit * 8,
+            paddingBottom: commonsStyles.spacing.unit * 8,
             ...commonsStyles.centerBottom
           }}
         >
@@ -66,11 +66,15 @@ export class Login extends Component {
             <View
               style={{
                 width: 250,
-                padding: 20
+                padding: commonsStyles.spacing.unit * 3
               }}
             >
               <Text
-                style={{ fontSize: 18, textAlign: "center", marginTop: 10 }}
+                style={{
+                  fontSize: 18,
+                  textAlign: "center",
+                  marginTop: commonsStyles.spacing.unit * 2
+                }}
               >
                 Identification
               </Text>
@@ -78,13 +82,15 @@ export class Login extends Component {
                 label="Email"
                 value={mail}
                 onChangeText={mail => this.setState({ mail })}
-                containerStyle={{ marginBottom: 5 }}
+                containerStyle={{ marginBottom: commonsStyles.spacing.unit }}
               />
               <TextField
                 label="Mot de passe"
                 value={password}
                 onChangeText={password => this.setState({ password })}
-                containerStyle={{ marginBottom: 30 }}
+                containerStyle={{
+                  marginBottom: commonsStyles.spacing.unit * 6
+                }}
               />
               <View style={{ alignItems: "center" }}>
                 <Button
@@ -116,7 +122,7 @@ export class Login extends Component {
         <View
           style={{
             flex: 1,
-            paddingBottom: 20,
+            paddingBottom: commonsStyles.spacing.unit * 4,
             ...commonsStyles.centerBottom
           }}
         >
