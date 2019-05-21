@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { ScrollView, View, Text } from "react-native";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
@@ -7,6 +7,9 @@ import { connect } from "react-redux";
 import getAllDreams from "../../actions/dreams/getAllDreams";
 
 import Burger from "../commons/Burger";
+import { Card } from "react-native-elements";
+import commonsStyles from "../../assets/styles/commonsStyles";
+import { Col, Grid } from "react-native-easy-grid";
 
 export class DreamsByCat extends Component {
   static propTypes = {};
@@ -39,7 +42,7 @@ export class DreamsByCat extends Component {
   }
 
   getAllCat(listDreams) {
-    let arrayCat = ["Derniers Ajout"];
+    let arrayCat = ["Derniers Ajouts"];
     listDreams.map(dream => {
       dream.catOfDream.map(cat => {
         if (!arrayCat.includes(cat.name)) {
@@ -59,13 +62,17 @@ export class DreamsByCat extends Component {
 
     arrayCat.forEach(cat => {
       customObject[cat] = [];
-      for (let index = 0; index < listDreams.length; index++) {
-        let dream = listDreams[index];
-        dream.catOfDream.forEach(dreamCat => {
-          if (dreamCat.name === cat) {
-            customObject[cat].push(dream);
-          }
-        });
+      if (cat === "Derniers Ajouts") {
+        customObject[cat] = listDreams.slice(0, 3);
+      } else {
+        for (let index = 0; index < listDreams.length; index++) {
+          let dream = listDreams[index];
+          dream.catOfDream.forEach(dreamCat => {
+            if (dreamCat.name === cat) {
+              customObject[cat].push(dream);
+            }
+          });
+        }
       }
     });
 
@@ -85,30 +92,76 @@ export class DreamsByCat extends Component {
     if (arrayCat && listDreams) {
       objectFormated = this.formatedObject(arrayCat, listDreams);
     }
-    console.log("objectFormated", objectFormated);
     return (
-      <View>
+      <ScrollView
+        style={{
+          paddingLeft: 10,
+          paddingRight: 10,
+          paddingBottom: 10
+        }}
+      >
         {objectFormated && arrayCat ? (
-          <View>
-            {messageError && (
-              <Text>Une erreur est survenue. {messageError}</Text>
-            )}
-            {arrayCat.map(cat => {
-              return (
-                <View key={cat}>
-                  <Text>{cat}</Text>
+          (messageError && <Text>Une erreur est survenue. {messageError}</Text>,
+          arrayCat.map(cat => (
+            <View
+              style={{
+                paddingTop: 10,
+                paddingBottom: 10
+              }}
+              key={cat}
+            >
+              <View style={{ flexDirection: "row" }}>
+                <Text style={{ flex: 4 }}>{cat}</Text>
+                <Text
+                  onPress={() => console.log("pressed")}
+                  style={{ flex: 1, color: commonsStyles.colors.primary }}
+                >
+                  Tout voir
+                </Text>
+              </View>
 
-                  {objectFormated[cat].map(dream => (
-                    <Text key={dream.idDream}>{dream.idDream}</Text>
-                  ))}
-                </View>
-              );
-            })}
-          </View>
+              <Grid>
+                {objectFormated[cat].map(dream => (
+                  <Col
+                    onPress={() => this.props.navigation.navigate("DreamView")}
+                    key={dream.idDream}
+                  >
+                    <Card
+                      containerStyle={{
+                        height: 80,
+                        padding: 5,
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      <Text
+                        style={{
+                          textAlign: "center",
+                          fontWeight: "bold"
+                        }}
+                      >
+                        {dream.name}
+                      </Text>
+                    </Card>
+                  </Col>
+                ))}
+              </Grid>
+            </View>
+          )))
         ) : (
-          <Text>Chargement en cours</Text>
+          <Text
+            style={{
+              paddingTop: 30,
+              paddingLeft: 10,
+              paddingRight: 10,
+              paddingBottom: 10
+            }}
+          >
+            Chargement en cours
+          </Text>
         )}
-      </View>
+      </ScrollView>
     );
   }
 }

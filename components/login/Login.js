@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 //components
 import { StyleSheet, View, Text } from "react-native";
-import { Card, Button } from "react-native-material-ui";
+import { Card, Button } from "react-native-elements";
 import { TextField } from "react-native-material-textfield";
 //axios
 import axios from "../../config/api";

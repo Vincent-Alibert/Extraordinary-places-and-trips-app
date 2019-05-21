@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Text, View } from "react-native";
 import Menu, { MenuItem, MenuDivider } from "react-native-material-menu";
 import { Icon } from "react-native-elements";
+import commonsStyles from "../../assets/styles/commonsStyles";
 
 export default class Burger extends Component {
   _menu = null;
@@ -31,7 +32,13 @@ export default class Burger extends Component {
         <Menu
           ref={this.setMenuRef}
           style={{}}
-          button={<Icon name="more-horiz" onPress={this.showMenu} />}
+          button={
+            <Icon
+              color={commonsStyles.colors.primary}
+              name="more-horiz"
+              onPress={this.showMenu}
+            />
+          }
         >
           <MenuItem onPress={() => this.props.navigation.navigate("MapView")}>
             Carte des rêves

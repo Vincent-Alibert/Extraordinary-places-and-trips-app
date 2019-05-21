@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Text } from "react-native";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Card, Button } from "react-native-material-ui";
+import { Card, Button } from "react-native-elements";
 import { TextField } from "react-native-material-textfield";
 // actions
 import createUser from "../../actions/login/createUser";
