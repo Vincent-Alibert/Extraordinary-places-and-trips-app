@@ -18,7 +18,8 @@ const commonsStyles = {
   colors: {
     white: "#ffffff",
     primary: "#73c2ff",
-    error: "#c32034"
+    error: "#c32034",
+    black: "#222222"
   },
   messageError: {
     color: "#c32034",
@@ -30,9 +31,17 @@ const commonsStyles = {
   dream: {
     section: {
       paddingBottom: 5,
-      paddingTOp: 5,
+      paddingTop: 5,
       paddingLeft: 10,
       paddingRight: 10
+    },
+    sectionTravel: {
+      section: { paddingBottom: 5, paddingTop: 5 },
+      title: {
+        fontSize: 15,
+        fontWeight: "bold",
+        paddingLeft: 0
+      }
     }
   }
 };

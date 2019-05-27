@@ -12,10 +12,7 @@ import MapPlace from "../components/map/MapPlace";
 import DreamsByCat from "../components/dreams/DreamsByCat";
 import DreamsForOneCat from "../components/dreams/DreamsForOneCat";
 import Dream from "../components/dreams/Dream";
-import DreamEdit from "../components/dreams/DreamEdit";
-import DreamCreate from "../components/dreams/DreamCreate";
-
-import Burger from "../components/commons/Burger";
+import EditCreateDreams from "../components/dreams/form/EditCreateDreams";
 
 const LoginStack = createStackNavigator(
   {
@@ -72,23 +69,10 @@ const DreamsForOneCatStack = createStackNavigator(
   }
 );
 
-const DreamStack = createStackNavigator(
-  {
-    DreamView: {
-      screen: Dream
-    },
-
-    DreamEditView: {
-      screen: DreamCreate
-    }
-  },
-  { headerLayoutPreset: "center", initialRouteName: "DreamView" }
-);
-
 const DreamCreateStack = createStackNavigator(
   {
     DreamCreateView: {
-      screen: DreamEdit
+      screen: EditCreateDreams
     }
   },
   { headerLayoutPreset: "center", initialRouteName: "DreamCreateView" }
@@ -100,12 +84,12 @@ export default createAppContainer(
       LoginFlow: LoginStack,
       MapFlow: MapStack,
       DreamsCatFlow: DreamsListStack,
-      DreamFlow: DreamStack,
+
       DreamCreateFlow: DreamCreateStack,
       DreamsForOneCatFlow: DreamsForOneCatStack
     },
     {
-      initialRouteName: "DreamFlow"
+      initialRouteName: "DreamCreateFlow"
     }
   )
 );
