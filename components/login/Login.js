@@ -95,11 +95,11 @@ export class Login extends Component {
               <View style={{ alignItems: "center" }}>
                 <Button
                   upperCase={false}
-                  style={{
-                    container: { ...commonsStyles.button },
-                    text: {
-                      color: commonsStyles.colors.white
-                    }
+                  buttonStyle={{
+                    ...commonsStyles.button
+                  }}
+                  titleStyle={{
+                    color: commonsStyles.colors.white
                   }}
                   text="Connection"
                   onPress={() => this.setUser()}
