@@ -33,6 +33,8 @@ export class DreamsByCat extends Component {
 
   componentDidMount() {
     if (!this.props.listDreams) {
+      console.log("cc");
+
       this.props.getAllDreams(this.leaveError);
     }
   }
@@ -128,7 +130,7 @@ export class DreamsByCat extends Component {
                 {objectFormated[cat].map(dream => (
                   <Col
                     onPress={() =>
-                      this.props.navigation.navigate("DreamView", {
+                      this.props.navigation.navigate("DreamViewCat", {
                         name: dream.name,
                         id: dream.idDream
                       })

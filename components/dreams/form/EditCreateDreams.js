@@ -81,24 +81,37 @@ export class EditCreateDreams extends Component {
   submitData(values) {
     const valuesFormatted = { ...values };
     const { catOfDream: catDream } = valuesFormatted;
-    console.log("catDream :", catDream);
     let objectCatDream = [];
     for (let index = 0; index < catDream.length; index++) {
       const cat = catDream[index];
       objectCatDream.push({ name: cat });
     }
-    console.log("objectCatDream :", objectCatDream);
     valuesFormatted.catOfDream = objectCatDream;
-    console.log("valuesFormatted :", valuesFormatted);
     submitDream(valuesFormatted)
       .then(resp => {
-        console.log("resp", resp);
+        console.log("resp", JSON.stringify(resp));
+        this.props.navigation.navigate("DreamViewList", {
+          name: resp.data.name,
+          id: resp.data.idDream
+        });
+        /*
+        {
+  "adress": "PortAventura",
+  "catOfDream": [{ "name": "Aventure" }, { "name": "Parc" }],
+  "catOfTransport": [],
+  "country": "Espagne",
+  "idDream": 17,
+  "name": "Parc Astérix",
+  "ownerUser": 3,
+  "travel": false
+}
+*/
       })
       .catch(error => {
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
-          this.leaveError(error.response.data);
+          this.leaveError({ message: error.response.data });
         } else if (error.request) {
           // The request was made but no response was received
           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
@@ -154,7 +167,6 @@ export class EditCreateDreams extends Component {
           onSubmit={values => this.submitData(values)}
         >
           {props => {
-            console.log("props", props.values);
             return (
               <View
                 style={{

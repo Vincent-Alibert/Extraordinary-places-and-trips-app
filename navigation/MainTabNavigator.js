@@ -33,7 +33,7 @@ const MapStack = createStackNavigator(
     MapView: {
       screen: MapPlace
     },
-    DreamView: {
+    DreamViewMap: {
       screen: Dream
     }
   },
@@ -45,7 +45,7 @@ const DreamsListStack = createStackNavigator(
     DreamsByCatView: {
       screen: DreamsByCat
     },
-    DreamView: {
+    DreamViewList: {
       screen: Dream
     }
   },
@@ -57,7 +57,7 @@ const DreamsForOneCatStack = createStackNavigator(
     DreamsForOneCatView: {
       screen: DreamsForOneCat
     },
-    DreamView: {
+    DreamViewCat: {
       screen: Dream
     }
   },
@@ -89,7 +89,7 @@ export default createAppContainer(
       DreamsForOneCatFlow: DreamsForOneCatStack
     },
     {
-      initialRouteName: "DreamCreateFlow"
+      initialRouteName: "DreamsCatFlow"
     }
   )
 );

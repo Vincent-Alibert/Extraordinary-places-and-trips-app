@@ -43,7 +43,7 @@ export default function getAllDreams(leaveError) {
           leaveError("Une erreur est survenue pendant la requête");
         } else {
           // Something happened in setting up the request that triggered an Error
-          console.log("Error :", error.message);
+
           leaveError("Une erreur est survenue");
         }
       });
