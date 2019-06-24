@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 // redux
 import { connect } from "react-redux";
 //components
-import { StyleSheet, View, Text } from "react-native";
+import { View, Text } from "react-native";
 import { Card, Button } from "react-native-elements";
 import { TextField } from "react-native-material-textfield";
 //axios
@@ -17,7 +17,7 @@ import commonsStyles from "../../assets/styles/commonsStyles";
 export class Login extends Component {
   static propTypes = {};
   static navigationOptions = {
-    title: null
+    header: null
   };
   constructor(props) {
     super(props);
@@ -101,7 +101,7 @@ export class Login extends Component {
                   titleStyle={{
                     color: commonsStyles.colors.white
                   }}
-                  text="Connection"
+                  title="Connection"
                   onPress={() => this.setUser()}
                 />
               </View>

@@ -87,7 +87,7 @@ export class Inscription extends Component {
                 titleStyle={{
                   color: commonsStyles.colors.white
                 }}
-                text="Valider"
+                title="Valider"
                 onPress={() => this.createUser()}
               />
             </View>
