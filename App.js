@@ -7,9 +7,7 @@ import thunk from "redux-thunk";
 import reducers from "./reducers/rootReducer";
 
 const invariant = require("redux-immutable-state-invariant").default();
-const createStoreWithMiddleware = applyMiddleware(invariant, thunk)(
-  createStore
-);
+const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 
 export default class App extends React.Component {
   render() {

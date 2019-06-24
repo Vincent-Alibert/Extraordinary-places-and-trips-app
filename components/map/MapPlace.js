@@ -30,14 +30,31 @@ class MapPlace extends Component {
     super(props);
     this.state = { messageError: null, isLoading: false };
     this.leaveError = this.leaveError.bind(this);
+    this.willFocusSub = this.props.navigation.addListener(
+      "willFocus",
+      payload => {
+        if (!this.props.listDreamsCat) {
+          this.props.getAllDreams(this.leaveError);
+        }
+      }
+    );
+    this.willBlurSub = this.props.navigation.addListener(
+      "willBlur",
+      payload => {
+        this.props.resetList();
+      }
+    );
   }
 
   componentDidMount() {
     this.props.getAllDreams(this.leaveError);
   }
+
   componentWillUnmount() {
     // Remove the event listener
-    this.props.resetList("map");
+    this.props.resetList();
+    this.willBlurSub.remove();
+    this.willFocusSub.remove();
   }
 
   leaveError(message) {
@@ -46,8 +63,7 @@ class MapPlace extends Component {
 
   render() {
     const { listDreams } = this.props;
-    console.log("MAP listDreams ");
-    return listDreams ? (
+    return listDreams.length > 0 ? (
       <MapView
         style={{ flex: 1 }}
         initialRegion={{
@@ -101,8 +117,10 @@ class MapPlace extends Component {
         ))}
       </MapView>
     ) : (
-      <View>
-        <Text>Chargement en cours ...</Text>
+      <View style={commonsStyles.dream.section}>
+        <Text style={{ color: commonsStyles.colors.primary }} h4>
+          Chargement en cours ...
+        </Text>
       </View>
     );
   }

@@ -22,9 +22,7 @@ export class Dream extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.listDreams) {
-      this.props.getAllDreams();
-    }
+    this.props.getAllDreams();
   }
 
   render() {

@@ -1,8 +1,8 @@
 import actions from "../actions/index-types";
 
 const initialState = {
-  listDreams: null,
-  listDreamsCat: null
+  listDreams: [],
+  listDreamsCat: []
 };
 
 export default function DreamsReducer(state = initialState, action) {
@@ -20,8 +20,8 @@ export default function DreamsReducer(state = initialState, action) {
     case actions.RESET_LIST:
       return {
         ...state,
-        listDreams: null,
-        listDreamsCat: null
+        listDreams: [],
+        listDreamsCat: []
       };
 
     default:

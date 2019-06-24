@@ -17,6 +17,7 @@ export class DreamsByCat extends Component {
 
   static navigationOptions = ({ navigation, navigationOptions }) => {
     const { params } = navigation.state;
+
     return {
       title: "Vos rêves",
       /* These values are used instead of the shared configuration! */
@@ -30,16 +31,32 @@ export class DreamsByCat extends Component {
     this.leaveError = this.leaveError.bind(this);
     this.getAllCat = this.getAllCat.bind(this);
     this.formatedObject = this.formatedObject.bind(this);
+
+    this.willFocusSub = this.props.navigation.addListener(
+      "willFocus",
+      payload => {
+        if (!this.props.listDreamsCat) {
+          this.props.getAllDreamsCat(this.leaveError);
+        }
+      }
+    );
+    this.willBlurSub = this.props.navigation.addListener(
+      "willBlur",
+      payload => {
+        this.props.resetList();
+      }
+    );
   }
 
   componentDidMount() {
-    if (!this.props.listDreams) {
-      this.props.getAllDreamsCat(this.leaveError, false);
-    }
+    this.props.getAllDreamsCat(this.leaveError);
   }
+
   componentWillUnmount() {
     // Remove the event listener
     this.props.resetList();
+    this.willBlurSub.remove();
+    this.willFocusSub.remove();
   }
 
   leaveError(message) {
@@ -93,14 +110,13 @@ export class DreamsByCat extends Component {
     const { messageError } = this.state;
     let arrayCat = null;
     let objectFormated = null;
-    if (listDreams) {
+    if (listDreams.length > 0) {
       arrayCat = this.getAllCat(listDreams);
     }
 
-    if (arrayCat && listDreams) {
+    if (arrayCat && listDreams.length > 0) {
       objectFormated = this.formatedObject(arrayCat, listDreams);
     }
-    console.log("cat listDreams");
     return (
       <ScrollView
         style={{
@@ -168,25 +184,22 @@ export class DreamsByCat extends Component {
             </View>
           )))
         ) : (
-          <Text
-            style={{
-              paddingTop: commonsStyles.spacing.unit * 6,
-              paddingLeft: commonsStyles.spacing.unit * 2,
-              paddingRight: commonsStyles.spacing.unit * 2,
-              paddingBottom: commonsStyles.spacing.unit * 2
-            }}
-          >
-            Chargement en cours
-          </Text>
+          <View style={commonsStyles.dream.section}>
+            <Text style={{ color: commonsStyles.colors.primary }} h4>
+              Chargement en cours ...
+            </Text>
+          </View>
         )}
       </ScrollView>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  listDreams: state.dreams.listDreamsCat
-});
+const mapStateToProps = state => {
+  return {
+    listDreams: state.dreams.listDreamsCat
+  };
+};
 
 const mapDispatchToProps = {
   getAllDreamsCat,

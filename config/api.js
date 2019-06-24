@@ -22,7 +22,8 @@ import axios from "axios";
  * Configure les paramètres par default d'axios
  */
 export default axios.create({
-  baseURL: "http://192.168.43.171:5000/",
+  baseURL: "http://192.168.1.16:5000/",
+  // baseURL: "http://192.168.43.171:5000/",
   headers: {
     "Content-Type": "application/json"
   }
