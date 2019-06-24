@@ -73,7 +73,7 @@ class MapPlace extends Component {
                 borderRadius: commonsStyles.spacing.unit
               }}
               onPress={() =>
-                this.props.navigation.navigate("DreamViewList", {
+                this.props.navigation.navigate("DreamViewMap", {
                   name: dream.name,
                   id: dream.idDream
                 })
