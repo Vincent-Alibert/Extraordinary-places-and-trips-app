@@ -70,9 +70,9 @@ export class Dream extends Component {
                   Catégorie
                 </Text>
                 <View style={{ flexDirection: "row" }}>
-                  {dream.catOfDream.map(cat => (
+                  {dream.catOfDream.map((cat, i) => (
                     <Card
-                      key={cat.name}
+                      key={i}
                       containerStyle={{ padding: commonsStyles.spacing.unit }}
                     >
                       <Text>{cat.name}</Text>
@@ -112,9 +112,9 @@ export class Dream extends Component {
                           ...commonsStyles.dream.section
                         }}
                       >
-                        {dream.catOfTransport.map(cat => (
+                        {dream.catOfTransport.map((cat, i) => (
                           <Card
-                            key={cat.name}
+                            key={i}
                             containerStyle={{
                               padding: commonsStyles.spacing.unit
                             }}
@@ -219,7 +219,7 @@ export class Dream extends Component {
 }
 
 const mapStateToProps = state => ({
-  listDreams: state.dreams.listeDreams
+  listDreams: state.dreams.listDreams
 });
 
 const mapDispatchToProps = {

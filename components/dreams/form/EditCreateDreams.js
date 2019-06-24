@@ -94,18 +94,6 @@ export class EditCreateDreams extends Component {
           name: resp.data.name,
           id: resp.data.idDream
         });
-        /*
-        {
-  "adress": "PortAventura",
-  "catOfDream": [{ "name": "Aventure" }, { "name": "Parc" }],
-  "catOfTransport": [],
-  "country": "Espagne",
-  "idDream": 17,
-  "name": "Parc Astérix",
-  "ownerUser": 3,
-  "travel": false
-}
-*/
       })
       .catch(error => {
         if (error.response) {
@@ -383,7 +371,7 @@ export class EditCreateDreams extends Component {
 }
 
 const mapStateToProps = state => ({
-  listDreams: state.dreams.listeDreams
+  listDreams: state.dreams.listDreams
 });
 
 const mapDispatchToProps = {};

@@ -37,7 +37,7 @@ const MapStack = createStackNavigator(
       screen: Dream
     }
   },
-  { headerLayoutPreset: "center" }
+  { initialRouteName: "MapView", headerLayoutPreset: "center" }
 );
 
 const DreamsListStack = createStackNavigator(
@@ -62,9 +62,7 @@ const DreamsForOneCatStack = createStackNavigator(
     }
   },
   {
-    headerMode: "screen",
     headerLayoutPreset: "center",
-    headerBackTitleVisible: true,
     initialRouteName: "DreamsForOneCatView"
   }
 );

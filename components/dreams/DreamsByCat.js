@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 // actions
-import getAllDreams from "../../actions/dreams/getAllDreams";
+import getAllDreamsCat from "../../actions/dreams/getAllDreamsCat";
+import resetList from "../../actions/dreams/resetList";
 
 import Burger from "../commons/Burger";
 import { Card } from "react-native-elements";
@@ -33,10 +34,12 @@ export class DreamsByCat extends Component {
 
   componentDidMount() {
     if (!this.props.listDreams) {
-      console.log("cc");
-
-      this.props.getAllDreams(this.leaveError);
+      this.props.getAllDreamsCat(this.leaveError, false);
     }
+  }
+  componentWillUnmount() {
+    // Remove the event listener
+    this.props.resetList();
   }
 
   leaveError(message) {
@@ -47,8 +50,8 @@ export class DreamsByCat extends Component {
     let arrayCat = ["Derniers Ajouts"];
     listDreams.map(dream => {
       dream.catOfDream.map(cat => {
-        if (!arrayCat.includes(cat.name)) {
-          arrayCat.push(cat.name);
+        if (!arrayCat.includes(cat)) {
+          arrayCat.push(cat);
         }
       });
     });
@@ -57,26 +60,30 @@ export class DreamsByCat extends Component {
 
   formatedObject(arrayCat, listDreams) {
     let customObject = {};
-
     listDreams.sort((a, b) => {
       return a.idDream < b.idDream;
     });
+    // console.log("arrayCat", arrayCat);
 
-    arrayCat.forEach(cat => {
+    for (let index = 0; index < arrayCat.length; index++) {
+      const cat = arrayCat[index];
       customObject[cat] = [];
       if (cat === "Derniers Ajouts") {
         customObject[cat] = listDreams.slice(0, 3);
       } else {
         for (let index = 0; index < listDreams.length; index++) {
           let dream = listDreams[index];
-          dream.catOfDream.forEach(dreamCat => {
-            if (dreamCat.name === cat) {
+          for (let index = 0; index < dream.catOfDream.length; index++) {
+            const dreamCat = dream.catOfDream[index];
+            if (dreamCat === cat) {
               customObject[cat].push(dream);
+              continue;
             }
-          });
+          }
         }
       }
-    });
+    }
+    // console.log("customObject", customObject);
 
     return customObject;
   }
@@ -86,7 +93,6 @@ export class DreamsByCat extends Component {
     const { messageError } = this.state;
     let arrayCat = null;
     let objectFormated = null;
-
     if (listDreams) {
       arrayCat = this.getAllCat(listDreams);
     }
@@ -94,6 +100,7 @@ export class DreamsByCat extends Component {
     if (arrayCat && listDreams) {
       objectFormated = this.formatedObject(arrayCat, listDreams);
     }
+    console.log("cat listDreams");
     return (
       <ScrollView
         style={{
@@ -104,13 +111,13 @@ export class DreamsByCat extends Component {
       >
         {objectFormated && arrayCat ? (
           (messageError && <Text>Une erreur est survenue. {messageError}</Text>,
-          arrayCat.map(cat => (
+          arrayCat.map((cat, i) => (
             <View
               style={{
                 paddingTop: commonsStyles.spacing.unit * 2,
                 paddingBottom: commonsStyles.spacing.unit * 2
               }}
-              key={cat}
+              key={i}
             >
               <View style={{ flexDirection: "row" }}>
                 <Text style={{ flex: 4 }}>{cat}</Text>
@@ -127,15 +134,15 @@ export class DreamsByCat extends Component {
               </View>
 
               <Grid>
-                {objectFormated[cat].map(dream => (
+                {objectFormated[cat].slice(0, 3).map((dream, i) => (
                   <Col
                     onPress={() =>
-                      this.props.navigation.navigate("DreamViewCat", {
+                      this.props.navigation.navigate("DreamViewList", {
                         name: dream.name,
                         id: dream.idDream
                       })
                     }
-                    key={dream.idDream}
+                    key={i}
                   >
                     <Card
                       containerStyle={{
@@ -178,11 +185,12 @@ export class DreamsByCat extends Component {
 }
 
 const mapStateToProps = state => ({
-  listDreams: state.dreams.listeDreams
+  listDreams: state.dreams.listDreamsCat
 });
 
 const mapDispatchToProps = {
-  getAllDreams
+  getAllDreamsCat,
+  resetList
 };
 
 export default connect(

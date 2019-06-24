@@ -2,34 +2,15 @@ import axios from "../../config/api";
 import map from "../../config/map";
 import actions from "../index-types";
 
-export default function getAllDreams(leaveError) {
+export default function getAllDreamsCat(leaveError) {
   return function(dispatch) {
     axios
       .get("api/v1/dreams/all")
       .then(async respDreams => {
         const listDreams = respDreams.data;
-
-        await Promise.all(
-          listDreams.map((dream, index) => {
-            addressFormated = dream.adress
-              .replace(/ /g, "+")
-              .replace(/,/g, "%");
-
-            return axios.get(
-              `https://www.mapquestapi.com/geocoding/v1/address?key=${
-                map.key
-              }&inFormat=kvp&outFormat=json&location=${addressFormated}&thumbMaps=false`
-            );
-          })
-        ).then(resp => {
-          resp.map((data, i) => {
-            listDreams[i].latLng = data.data.results[0].locations[0].latLng;
-          });
-
-          dispatch({
-            type: actions.GET_ALL_DREAMS_CURRENT_USER,
-            payload: listDreams
-          });
+        dispatch({
+          type: actions.GET_ALL_DREAMS_CURRENT_USER_CAT,
+          payload: listDreams
         });
       })
       .catch(function(error) {
