@@ -1,12 +1,15 @@
 import React, { Component } from "react";
-import { View, Text, Dimensions } from "react-native";
 import PropTypes from "prop-types";
+import { View, Text, Dimensions } from "react-native";
 import { connect } from "react-redux";
 import { MapView } from "expo";
-import { Marker } from "react-native-maps";
+import { Marker, Callout } from "react-native-maps";
 import Burger from "../commons/Burger";
 // actions
 import getAllDreams from "../../actions/dreams/getAllDreams";
+import resetList from "../../actions/dreams/resetList";
+// style
+import commonsStyles from "../../assets/styles/commonsStyles";
 
 const { width, height } = Dimensions.get("window");
 
@@ -32,6 +35,10 @@ class MapPlace extends Component {
   componentDidMount() {
     this.props.getAllDreams(this.leaveError);
   }
+  componentWillUnmount() {
+    // Remove the event listener
+    this.props.resetList("map");
+  }
 
   leaveError(message) {
     this.setState({ messageError: message });
@@ -39,6 +46,7 @@ class MapPlace extends Component {
 
   render() {
     const { listDreams } = this.props;
+    console.log("MAP listDreams ");
     return listDreams ? (
       <MapView
         style={{ flex: 1 }}
@@ -58,7 +66,38 @@ class MapPlace extends Component {
             }}
             title={dream.name}
             description={dream.note}
-          />
+          >
+            <Callout
+              style={{
+                padding: commonsStyles.spacing.unit,
+                borderRadius: commonsStyles.spacing.unit
+              }}
+              onPress={() =>
+                this.props.navigation.navigate("DreamViewList", {
+                  name: dream.name,
+                  id: dream.idDream
+                })
+              }
+            >
+              <View>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "bold",
+                    textAlign: "center"
+                  }}
+                >
+                  {dream.name}
+                </Text>
+                {dream.note && (
+                  <Text>
+                    {dream.note.substring(0, 50)}
+                    {dream.note.length > 50 && "..."}
+                  </Text>
+                )}
+              </View>
+            </Callout>
+          </Marker>
         ))}
       </MapView>
     ) : (
@@ -71,11 +110,12 @@ class MapPlace extends Component {
 //
 // 1.7841071
 const mapStateToProps = state => ({
-  listDreams: state.dreams.listeDreams
+  listDreams: state.dreams.listDreams
 });
 
 const mapDispatchToProps = {
-  getAllDreams
+  getAllDreams,
+  resetList
 };
 
 export default connect(
