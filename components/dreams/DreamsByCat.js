@@ -21,7 +21,9 @@ export class DreamsByCat extends Component {
     return {
       title: "Vos rêves",
       /* These values are used instead of the shared configuration! */
-      headerRight: <Burger navigation={navigation} />
+      headerRight: (
+        <Burger creationLink="DreamCreateViewList" navigation={navigation} />
+      )
     };
   };
 

@@ -23,7 +23,9 @@ class MapPlace extends Component {
     return {
       title: "Extraordinary places",
       /* These values are used instead of the shared configuration! */
-      headerRight: <Burger navigation={navigation} />
+      headerRight: (
+        <Burger creationLink="DreamCreateViewMap" navigation={navigation} />
+      )
     };
   };
   constructor(props) {

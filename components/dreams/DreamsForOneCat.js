@@ -19,7 +19,9 @@ export class DreamsForOneCat extends Component {
     return {
       title: navigation.getParam("categorie"),
       /* These values are used instead of the shared configuration! */
-      headerRight: <Burger navigation={navigation} />,
+      headerRight: (
+        <Burger creationLink="DreamCreateViewCat" navigation={navigation} />
+      ),
       headerLeft: <CustomGoBack navigation={navigation} />
     };
   };

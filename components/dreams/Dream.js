@@ -12,9 +12,9 @@ import commonsStyles from "../../assets/styles/commonsStyles";
 export class Dream extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: navigation.getParam("name") || "Dream",
+      title: navigation.getParam("name") || "Dream"
       /* These values are used instead of the shared configuration! */
-      headerRight: <Burger navigation={navigation} />
+      // headerRight: <Burger navigation={navigation} />
     };
   };
   constructor(props) {

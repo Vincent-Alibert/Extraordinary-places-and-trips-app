@@ -20,6 +20,7 @@ export default class Burger extends Component {
   };
 
   render() {
+    const { creationLink } = this.props;
     return (
       <View
         style={{
@@ -40,18 +41,29 @@ export default class Burger extends Component {
             />
           }
         >
-          <MenuItem onPress={() => this.props.navigation.navigate("MapView")}>
+          <MenuItem
+            onPress={() => {
+              this.props.navigation.navigate("MapView");
+              this.hideMenu();
+            }}
+          >
             Carte des rêves
           </MenuItem>
           <MenuDivider />
           <MenuItem
-            onPress={() => this.props.navigation.navigate("DreamsByCatView")}
+            onPress={() => {
+              this.props.navigation.navigate("DreamsByCatView");
+              this.hideMenu();
+            }}
           >
             Rêves par catégories
           </MenuItem>
           <MenuDivider />
           <MenuItem
-            onPress={() => this.props.navigation.navigate("DreamCreateView")}
+            onPress={() => {
+              this.props.navigation.navigate(creationLink);
+              this.hideMenu();
+            }}
           >
             Ajouter un rêve
           </MenuItem>
