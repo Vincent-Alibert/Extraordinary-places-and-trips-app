@@ -8,7 +8,7 @@ export class CustomGoBack extends Component {
       <TouchableHighlight style={{ paddingLeft: 10 }}>
         <Icon
           name="arrow-back"
-          onPress={() => this.props.navigation.navigate("DreamsByCatView")}
+          onPress={() => this.props.navigation.navigate("DBCList")}
         />
       </TouchableHighlight>
     );

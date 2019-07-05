@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { ScrollView, View, Picker } from "react-native";
 import { Button } from "react-native-elements";
-import PropTypes from "prop-types";
 import { Text } from "react-native-elements";
 import { TextField } from "react-native-material-textfield";
 import { Formik } from "formik";
@@ -19,7 +18,6 @@ export class EditCreateDreams extends Component {
         : "Création d'un rêve"
     };
   };
-  static propTypes = {};
   constructor(props) {
     super(props);
     this.state = { messageError: null };
@@ -90,7 +88,7 @@ export class EditCreateDreams extends Component {
     submitDream(valuesFormatted)
       .then(resp => {
         console.log("resp", JSON.stringify(resp));
-        this.props.navigation.navigate("DreamViewList", {
+        this.props.navigation.navigate("DBCDreamView", {
           name: resp.data.name,
           id: resp.data.idDream
         });

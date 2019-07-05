@@ -10,7 +10,7 @@ import Burger from "../commons/Burger";
 import CustomGoBack from "../commons/CustomGoBack";
 import { Card } from "react-native-elements";
 import commonsStyles from "../../assets/styles/commonsStyles";
-import { Col, Grid } from "react-native-easy-grid";
+import { Col, Grid, Row } from "react-native-easy-grid";
 
 export class DreamsForOneCat extends Component {
   static propTypes = {};
@@ -20,7 +20,7 @@ export class DreamsForOneCat extends Component {
       title: navigation.getParam("categorie"),
       /* These values are used instead of the shared configuration! */
       headerRight: (
-        <Burger creationLink="DreamCreateViewCat" navigation={navigation} />
+        <Burger creationLink="DFOCCreateDream" navigation={navigation} />
       ),
       headerLeft: <CustomGoBack navigation={navigation} />
     };
@@ -65,20 +65,32 @@ export class DreamsForOneCat extends Component {
   formatedObject(listDreams) {
     const cat = this.props.navigation.getParam("categorie");
 
-    const formatList = [
-      ...listDreams.filter(dream => dream.catOfDream.includes(cat) && dream)
-    ];
+    let formatList = [];
+    if (cat === "*") {
+      formatList = [...listDreams];
+    } else {
+      formatList = [
+        ...listDreams.filter(dream => dream.catOfDream.includes(cat) && dream)
+      ];
+    }
     return formatList;
   }
 
   render() {
     const { listDreams } = this.props;
     const { messageError } = this.state;
+    const chunk = (arr, chunckSize) =>
+      arr.reduce((chunks, value, index) => {
+        const chunckIndex = Math.floor(index / chunckSize);
+        const c = chunks[chunckIndex] || (chunks[chunckIndex] = []);
+        c.push(value);
+        return chunks;
+      }, []);
     let listFormated = null;
     if (listDreams) {
       listFormated = this.formatedObject(listDreams);
     }
-    // console.log("listFormated", listFormated);
+
     return (
       <ScrollView
         style={{
@@ -88,47 +100,56 @@ export class DreamsForOneCat extends Component {
         }}
       >
         {listFormated ? (
-          (messageError && <Text>Une erreur est survenue. {messageError}</Text>,
-          listFormated.map((dream, i) => (
-            <View
-              style={{
-                paddingTop: commonsStyles.spacing.unit * 2,
-                paddingBottom: commonsStyles.spacing.unit * 2
-              }}
-              key={i}
-            >
-              <Grid>
-                <Col
-                  onPress={() =>
-                    this.props.navigation.navigate("DreamViewCat", {
-                      name: dream.name,
-                      id: dream.idDream
-                    })
-                  }
-                  key={i}
-                >
-                  <Card
-                    containerStyle={{
-                      height: 80,
-                      padding: commonsStyles.spacing.unit,
-                      flex: 1,
-                      justifyContent: "center",
-                      alignItems: "center"
-                    }}
-                  >
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        fontWeight: "bold"
-                      }}
-                    >
-                      {dream.name}
-                    </Text>
-                  </Card>
-                </Col>
-              </Grid>
-            </View>
-          )))
+          <View
+            style={{
+              paddingTop: commonsStyles.spacing.unit * 2,
+              paddingBottom: commonsStyles.spacing.unit * 2
+            }}
+          >
+            {messageError && (
+              <Text>Une erreur est survenue. {messageError}</Text>
+            )}
+            <Grid>
+              {chunk(listFormated, 3).map((dreams, ind) => {
+                return (
+                  <Row key={ind}>
+                    {dreams.map((dream, i) => {
+                      return (
+                        <Col
+                          onPress={() =>
+                            this.props.navigation.navigate("DFOCDreamView", {
+                              name: dream.name,
+                              id: dream.idDream
+                            })
+                          }
+                          key={i}
+                        >
+                          <Card
+                            containerStyle={{
+                              height: 80,
+                              padding: commonsStyles.spacing.unit,
+                              flex: 1,
+                              justifyContent: "center",
+                              alignItems: "center"
+                            }}
+                          >
+                            <Text
+                              style={{
+                                textAlign: "center",
+                                fontWeight: "bold"
+                              }}
+                            >
+                              {dream.name}
+                            </Text>
+                          </Card>
+                        </Col>
+                      );
+                    })}
+                  </Row>
+                );
+              })}
+            </Grid>
+          </View>
         ) : (
           <View style={commonsStyles.dream.section}>
             <Text style={{ color: commonsStyles.colors.primary }} h4>

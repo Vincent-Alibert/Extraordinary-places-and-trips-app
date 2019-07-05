@@ -52,7 +52,7 @@ export default class Burger extends Component {
           <MenuDivider />
           <MenuItem
             onPress={() => {
-              this.props.navigation.navigate("DreamsByCatView");
+              this.props.navigation.navigate("DBCList");
               this.hideMenu();
             }}
           >

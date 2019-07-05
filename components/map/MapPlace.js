@@ -24,7 +24,7 @@ class MapPlace extends Component {
       title: "Extraordinary places",
       /* These values are used instead of the shared configuration! */
       headerRight: (
-        <Burger creationLink="DreamCreateViewMap" navigation={navigation} />
+        <Burger creationLink="MapDreamCreateView" navigation={navigation} />
       )
     };
   };
@@ -91,7 +91,7 @@ class MapPlace extends Component {
                 borderRadius: commonsStyles.spacing.unit
               }}
               onPress={() =>
-                this.props.navigation.navigate("DreamViewMap", {
+                this.props.navigation.navigate("MapDreamView", {
                   name: dream.name,
                   id: dream.idDream
                 })

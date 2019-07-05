@@ -22,7 +22,7 @@ export class DreamsByCat extends Component {
       title: "Vos rêves",
       /* These values are used instead of the shared configuration! */
       headerRight: (
-        <Burger creationLink="DreamCreateViewList" navigation={navigation} />
+        <Burger creationLink="DBCCreateDream" navigation={navigation} />
       )
     };
   };
@@ -82,7 +82,6 @@ export class DreamsByCat extends Component {
     listDreams.sort((a, b) => {
       return a.idDream < b.idDream;
     });
-    // console.log("arrayCat", arrayCat);
 
     for (let index = 0; index < arrayCat.length; index++) {
       const cat = arrayCat[index];
@@ -102,7 +101,6 @@ export class DreamsByCat extends Component {
         }
       }
     }
-    // console.log("customObject", customObject);
 
     return customObject;
   }
@@ -141,8 +139,8 @@ export class DreamsByCat extends Component {
                 <Text style={{ flex: 4 }}>{cat}</Text>
                 <Text
                   onPress={() =>
-                    this.props.navigation.navigate("DreamsForOneCatView", {
-                      categorie: cat
+                    this.props.navigation.navigate("DFOCList", {
+                      categorie: "*"
                     })
                   }
                   style={{ flex: 1, color: commonsStyles.colors.primary }}
@@ -155,7 +153,7 @@ export class DreamsByCat extends Component {
                 {objectFormated[cat].slice(0, 3).map((dream, i) => (
                   <Col
                     onPress={() =>
-                      this.props.navigation.navigate("DreamViewList", {
+                      this.props.navigation.navigate("DBCDreamView", {
                         name: dream.name,
                         id: dream.idDream
                       })

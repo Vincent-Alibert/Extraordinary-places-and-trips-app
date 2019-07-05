@@ -31,64 +31,58 @@ const MapStack = createStackNavigator(
     MapView: {
       screen: MapPlace
     },
-    DreamViewMap: {
+    MapDreamView: {
       screen: Dream
     },
-    DreamCreateViewMap: {
+    MapDreamCreateView: {
       screen: EditCreateDreams
     }
   },
   { initialRouteName: "MapView", headerLayoutPreset: "center" }
 );
 
-const DreamsListStack = createStackNavigator(
+const DreamsByCatStack = createStackNavigator(
   {
-    DreamsByCatView: {
+    DBCList: {
       screen: DreamsByCat
     },
-    DreamViewList: {
+    DBCDreamView: {
       screen: Dream
     },
-    DreamCreateViewList: {
+    DBCCreateDream: {
       screen: EditCreateDreams
     }
   },
-  { headerLayoutPreset: "center", initialRouteName: "DreamsByCatView" }
+  { headerLayoutPreset: "center", initialRouteName: "DBCList" }
 );
 
 const DreamsForOneCatStack = createStackNavigator(
   {
-    DreamsForOneCatView: {
+    DFOCList: {
       screen: DreamsForOneCat
     },
-    DreamViewCat: {
+    DFOCDreamView: {
       screen: Dream
     },
-    DreamCreateViewCat: {
+    DFOCCreateDream: {
+      screen: EditCreateDreams
+    },
+    DFOCModifDream: {
       screen: EditCreateDreams
     }
   },
   {
     headerLayoutPreset: "center",
-    initialRouteName: "DreamsForOneCatView"
+    initialRouteName: "DFOCList"
   }
 );
-
-// const DreamCreateStack = createStackNavigator(
-//   {
-//     DreamCreateView: {
-//       screen: EditCreateDreams
-//     }
-//   },
-//   { headerLayoutPreset: "center", initialRouteName: "DreamCreateView" }
-// );
 
 export default createAppContainer(
   createSwitchNavigator(
     {
       LoginFlow: LoginStack,
       MapFlow: MapStack,
-      DreamsCatFlow: DreamsListStack,
+      DreamsCatFlow: DreamsByCatStack,
       DreamsForOneCatFlow: DreamsForOneCatStack
     },
     {

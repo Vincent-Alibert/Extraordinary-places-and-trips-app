@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { View, ScrollView } from "react-native";
-import { Text, Divider, Card } from "react-native-elements";
+import { View, ScrollView, Text } from "react-native";
+import { Divider, Card } from "react-native-elements";
 import BottomNavigation from "./BottomNavigation";
-import Burger from "../commons/Burger";
 // actions
 import getAllDreams from "../../actions/dreams/getAllDreams";
 import commonsStyles from "../../assets/styles/commonsStyles";
@@ -39,7 +38,8 @@ export class Dream extends Component {
       <View
         style={{
           paddingBottom: commonsStyles.spacing.unit * 13,
-          paddingTop: commonsStyles.spacing.unit
+          paddingTop: commonsStyles.spacing.unit,
+          flex: 1
         }}
       >
         <ScrollView style={{ paddingBottom: commonsStyles.spacing.unit * 12 }}>
@@ -68,21 +68,23 @@ export class Dream extends Component {
                   Catégorie
                 </Text>
                 <View style={{ flexDirection: "row" }}>
-                  {dream.catOfDream.map((cat, i) => (
-                    <Card
-                      key={i}
-                      containerStyle={{ padding: commonsStyles.spacing.unit }}
-                    >
-                      <Text>{cat.name}</Text>
-                    </Card>
-                  ))}
+                  {dream.catOfDream.map((cat, i) => {
+                    return (
+                      <Card
+                        key={i}
+                        containerStyle={{ padding: commonsStyles.spacing.unit }}
+                      >
+                        <Text>{cat}</Text>
+                      </Card>
+                    );
+                  })}
                 </View>
               </View>
               <View style={commonsStyles.dream.section}>
                 <Text style={{ color: commonsStyles.colors.primary }} h4>
                   Voyage prévu
                 </Text>
-                {!dream.travel ? (
+                {dream.travel ? (
                   <React.Fragment>
                     <View style={commonsStyles.dream.sectionTravel.section}>
                       <Text
