@@ -68,12 +68,14 @@ export class Inscription extends Component {
             />
             <TextField
               label="Mot de passe"
+              secureTextEntry={true}
               value={password}
               onChangeText={password => this.setState({ password })}
               containerStyle={{ marginBottom: commonsStyles.spacing.unit }}
             />
             <TextField
               label="Vérification mot de passe"
+              secureTextEntry={true}
               value={passwordVerif}
               onChangeText={passwordVerif => this.setState({ passwordVerif })}
               containerStyle={{ marginBottom: commonsStyles.spacing.unit * 6 }}

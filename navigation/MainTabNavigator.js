@@ -92,7 +92,7 @@ export default createAppContainer(
       DreamsForOneCatFlow: DreamsForOneCatStack
     },
     {
-      initialRouteName: "DreamsCatFlow"
+      initialRouteName: "LoginFlow"
     }
   )
 );

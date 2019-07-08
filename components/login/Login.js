@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 // redux
 import { connect } from "react-redux";
 //components
@@ -86,6 +85,8 @@ export class Login extends Component {
               />
               <TextField
                 label="Mot de passe"
+                type="password"
+                secureTextEntry={true}
                 value={password}
                 onChangeText={password => this.setState({ password })}
                 containerStyle={{
