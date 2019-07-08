@@ -6,6 +6,13 @@ import commonsStyles from "../../assets/styles/commonsStyles";
 
 export default class BottomNavigation extends Component {
   render() {
+    const { navigation, routeName, dream } = this.props;
+    const modifRoute =
+      routeName === "DBCDreamView"
+        ? "DBCModifDream"
+        : routeName === "DBCDreamView"
+        ? "DFOCModifDream"
+        : routeName === "MapDreamView" && "MapModifDream";
     return (
       <View
         style={{
@@ -28,12 +35,15 @@ export default class BottomNavigation extends Component {
           shadowColor: commonsStyles.colors.black
         }}
       >
-        <TouchableOpacity>
-          <Icon
-            color={commonsStyles.colors.primary}
-            name="edit"
-            onPress={this.showMenu}
-          />
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate(modifRoute, {
+              name: dream.name,
+              id: dream.idDream
+            })
+          }
+        >
+          <Icon color={commonsStyles.colors.primary} name="edit" />
           <Text style={{ color: commonsStyles.colors.primary }}>
             Modifier ce rêve
           </Text>

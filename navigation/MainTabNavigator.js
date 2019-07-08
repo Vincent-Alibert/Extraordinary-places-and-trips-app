@@ -36,6 +36,9 @@ const MapStack = createStackNavigator(
     },
     MapDreamCreateView: {
       screen: EditCreateDreams
+    },
+    MapModifDream: {
+      screen: EditCreateDreams
     }
   },
   { initialRouteName: "MapView", headerLayoutPreset: "center" }
@@ -50,6 +53,9 @@ const DreamsByCatStack = createStackNavigator(
       screen: Dream
     },
     DBCCreateDream: {
+      screen: EditCreateDreams
+    },
+    DBCModifDream: {
       screen: EditCreateDreams
     }
   },

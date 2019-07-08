@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import { ScrollView, View, Picker } from "react-native";
+import { ScrollView, View, Picker, Text } from "react-native";
 import { Button } from "react-native-elements";
-import { Text } from "react-native-elements";
 import { TextField } from "react-native-material-textfield";
 import { Formik } from "formik";
 import MultiSelect from "react-native-multiple-select";
-import { connect } from "react-redux";
-
-import commonsStyles from "../../../assets/styles/commonsStyles";
+import getOneDream from "../../../actions/dreams/getOneDream";
 import submitDream from "../../../actions/dreams/submitDream";
+import updateDream from "../../../actions/dreams/updateDream";
+// styles
+import commonsStyles from "../../../assets/styles/commonsStyles";
 
 export class EditCreateDreams extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -20,7 +20,7 @@ export class EditCreateDreams extends Component {
   };
   constructor(props) {
     super(props);
-    this.state = { messageError: null };
+    this.state = { messageError: null, dream: null, animation: false };
     this.items = [
       {
         id: "Insolite",
@@ -72,23 +72,107 @@ export class EditCreateDreams extends Component {
     this.showMessageError = this.showMessageError.bind(this);
   }
 
+  componentDidMount() {
+    const id = this.props.navigation.getParam("id");
+
+    if (id) {
+      getOneDream(id)
+        .then(resp => {
+          this.setState({ animation: true, dream: resp.data });
+        })
+        .catch(function(error) {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            this.leaveError(error.response);
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            this.leaveError("Une erreur est survenue pendant la requête");
+          } else {
+            // Something happened in setting up the request that triggered an Error
+
+            this.leaveError("Une erreur est survenue");
+          }
+        });
+    } else {
+      this.setState({ animation: true });
+    }
+  }
+
   leaveError(message) {
     this.setState({ messageError: message });
   }
 
   submitData(values) {
+    const routeName = this.props.navigation.state.routeName;
+    const initDream = this.state.dream;
+
+    switch (routeName) {
+      case "DBCModifDream":
+      case "DBCCreateDream":
+        modifRoute = "DBCDreamView";
+        break;
+      case "DFOCModifDream":
+      case "DFOCCreateDream":
+        modifRoute = "DFOCDreamView";
+        break;
+      case "MapModifDream":
+      case "MapCreateDream":
+        modifRoute = "MapDreamView";
+        break;
+
+      default:
+        modifRoute = "DBCDreamView";
+        break;
+    }
+
     const valuesFormatted = { ...values };
     const { catOfDream: catDream } = valuesFormatted;
     let objectCatDream = [];
     for (let index = 0; index < catDream.length; index++) {
       const cat = catDream[index];
+      // if (initDream) {
+      //   if (!initDream.catOfDream.includes(cat)) {
+      //     objectCatDream.push({ name: cat });
+      //   }
+      // } else {
       objectCatDream.push({ name: cat });
+      // }
     }
     valuesFormatted.catOfDream = objectCatDream;
-    submitDream(valuesFormatted)
+
+    const { catOfTransport: catTransp } = valuesFormatted;
+    let objectCatTransp = [];
+    for (let index = 0; index < catTransp.length; index++) {
+      const cat = catTransp[index];
+      // if (initDream) {
+      //   if (!initDream.catOfTransport.includes(cat)) {
+      //     objectCatTransp.push({ name: cat });
+      //   }
+      // } else {
+      objectCatTransp.push({ name: cat });
+      // }
+    }
+    valuesFormatted.catOfTransport = objectCatTransp;
+
+    for (const field in valuesFormatted) {
+      const value = valuesFormatted[field];
+      if (value === null) {
+        delete valuesFormatted[field];
+      }
+    }
+    const send = this.props.navigation.getParam("id")
+      ? updateDream(valuesFormatted)
+      : submitDream(valuesFormatted);
+    send
       .then(resp => {
-        console.log("resp", JSON.stringify(resp));
-        this.props.navigation.navigate("DBCDreamView", {
+        this.props.navigation.replace(modifRoute, {
+          name: resp.data.name,
+          id: resp.data.idDream
+        });
+        this.props.navigation.navigate(modifRoute, {
           name: resp.data.name,
           id: resp.data.idDream
         });
@@ -97,7 +181,7 @@ export class EditCreateDreams extends Component {
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
-          this.leaveError({ message: error.response.data });
+          this.leaveError({ ...error.response.data });
         } else if (error.request) {
           // The request was made but no response was received
           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
@@ -129,16 +213,8 @@ export class EditCreateDreams extends Component {
   }
 
   render() {
-    const { listDreams } = this.props;
+    const { dream, animation } = this.state;
     const { messageError } = this.state;
-    const idDream = this.props.navigation.getParam("id");
-    let currentDream, dream;
-    if (listDreams) {
-      currentDream = listDreams.filter(dream => {
-        return dream.idDream === idDream;
-      });
-      dream = currentDream[0];
-    }
     return (
       <ScrollView
         style={{
@@ -148,233 +224,233 @@ export class EditCreateDreams extends Component {
           paddingRight: commonsStyles.spacing.unit
         }}
       >
-        <Formik
-          initialValues={dream ? dream : { catOfDream: [], catOfTransport: [] }}
-          onSubmit={values => this.submitData(values)}
-        >
-          {props => {
-            return (
-              <View
-                style={{
-                  paddingBottom: commonsStyles.spacing.unit * 5
-                }}
-              >
-                <TextField
-                  label="Nom du rêve"
-                  value={props.values.name}
-                  onChangeText={props.handleChange("name")}
-                  containerStyle={{
-                    marginBottom: commonsStyles.spacing.unit
-                  }}
-                />
-                <TextField
-                  label="Pays"
-                  value={props.values.country}
-                  onChangeText={props.handleChange("country")}
-                  containerStyle={{
-                    marginBottom: commonsStyles.spacing.unit
-                  }}
-                />
-                <TextField
-                  label="Adresse"
-                  value={props.values.adress}
-                  onChangeText={props.handleChange("adress")}
-                  containerStyle={{
-                    marginBottom: commonsStyles.spacing.unit
-                  }}
-                />
-
+        {animation ? (
+          <Formik
+            initialValues={
+              dream ? dream : { catOfDream: [], catOfTransport: [] }
+            }
+            onSubmit={values => this.submitData(values)}
+          >
+            {props => {
+              const datas = props.values;
+              return (
                 <View
                   style={{
-                    flex: 1,
-                    marginTop: commonsStyles.spacing.unit * 2,
-                    marginBottom: 0
+                    paddingBottom: commonsStyles.spacing.unit * 5
                   }}
                 >
-                  <MultiSelect
-                    hideTags
-                    items={this.items}
-                    uniqueKey="id"
-                    ref={component => {
-                      this.multiSelect = component;
+                  <TextField
+                    label="Nom du rêve"
+                    value={datas.name ? datas.name : ""}
+                    onChangeText={props.handleChange("name")}
+                    containerStyle={{
+                      marginBottom: commonsStyles.spacing.unit
                     }}
-                    onSelectedItemsChange={selectedItems =>
-                      props.setFieldValue("catOfDream", selectedItems)
-                    }
-                    selectedItems={props.values.catOfDream}
-                    selectText="Catégorie"
-                    searchInputPlaceholderText="Search Items..."
-                    onChangeInput={text => console.log(text)}
-                    altFontFamily="Roboto"
-                    tagRemoveIconColor="#CCC"
-                    tagBorderColor="#CCC"
-                    tagTextColor="#CCC"
-                    selectedItemTextColor="#CCC"
-                    selectedItemIconColor="#CCC"
-                    itemTextColor="#000"
-                    displayKey="name"
-                    searchInputStyle={{ color: "#CCC" }}
-                    submitButtonColor="#CCC"
-                    submitButtonText="Choisir"
                   />
-                  <View>
-                    {this.multiSelect &&
-                      this.multiSelect.getSelectedItemsExt(
-                        props.values.catOfDream
-                      )}
-                  </View>
-                </View>
-                <View
-                  style={{
-                    flex: 1,
-                    marginTop: commonsStyles.spacing.unit * 2,
-                    borderBottomColor: "rgba(0, 0, 0, .1)",
-                    borderBottomWidth: 1,
-                    marginBottom: 0
-                  }}
-                >
-                  <Text style={{ color: "rgba(0, 0, 0, .4)", fontSize: 15 }}>
-                    Voyage prévu ?
-                  </Text>
-                  <Picker
-                    selectedValue={props.values.travel}
-                    style={{ height: 50 }}
-                    onValueChange={itemValue =>
-                      props.setFieldValue("travel", itemValue)
-                    }
+                  <TextField
+                    label="Pays"
+                    value={datas.country ? datas.country : ""}
+                    onChangeText={props.handleChange("country")}
+                    containerStyle={{
+                      marginBottom: commonsStyles.spacing.unit
+                    }}
+                  />
+                  <TextField
+                    label="Adresse"
+                    value={datas.adress ? datas.adress : ""}
+                    onChangeText={props.handleChange("adress")}
+                    containerStyle={{
+                      marginBottom: commonsStyles.spacing.unit
+                    }}
+                  />
+
+                  <View
+                    style={{
+                      flex: 1,
+                      marginTop: commonsStyles.spacing.unit * 2,
+                      marginBottom: 0
+                    }}
                   >
-                    <Picker.Item label="Choix..." value={null} />
-                    <Picker.Item label="Oui" value={true} />
-                    <Picker.Item label="Non" value={false} />
-                  </Picker>
-                </View>
-                {props.values.travel && (
-                  <React.Fragment>
-                    <TextField
-                      label="Date prévue"
-                      value={props.values.date}
-                      onChangeText={props.handleChange("date")}
-                      containerStyle={{
-                        marginBottom: commonsStyles.spacing.unit
+                    <MultiSelect
+                      hideTags
+                      items={this.items}
+                      uniqueKey="id"
+                      ref={component => {
+                        this.multiSelect = component;
                       }}
+                      onSelectedItemsChange={selectedItems =>
+                        props.setFieldValue("catOfDream", selectedItems)
+                      }
+                      selectedItems={datas.catOfDream}
+                      selectText="Catégorie"
+                      searchInputPlaceholderText="Search Items..."
+                      altFontFamily="Roboto"
+                      tagRemoveIconColor="#CCC"
+                      tagBorderColor="#CCC"
+                      tagTextColor="#CCC"
+                      selectedItemTextColor="#CCC"
+                      selectedItemIconColor="#CCC"
+                      itemTextColor="#000"
+                      displayKey="name"
+                      searchInputStyle={{ color: "#CCC" }}
+                      submitButtonColor="#CCC"
+                      submitButtonText="Choisir"
                     />
-                    <View
-                      style={{
-                        flex: 1,
-                        marginTop: commonsStyles.spacing.unit * 2,
-                        marginBottom: 0
-                      }}
-                    >
-                      <MultiSelect
-                        hideTags
-                        items={this.catTrans}
-                        uniqueKey="id"
-                        ref={component => {
-                          this.multiSelect = component;
-                        }}
-                        onSelectedItemsChange={selectedItems =>
-                          props.setFieldValue("catOfTransport", selectedItems)
-                        }
-                        selectedItems={props.values.catOfTransport}
-                        selectText="Choix du transport"
-                        searchInputPlaceholderText="Search Items..."
-                        onChangeInput={text => console.log(text)}
-                        altFontFamily="Roboto"
-                        tagRemoveIconColor="#CCC"
-                        tagBorderColor="#CCC"
-                        tagTextColor="#CCC"
-                        selectedItemTextColor="#CCC"
-                        selectedItemIconColor="#CCC"
-                        itemTextColor="#000"
-                        displayKey="name"
-                        searchInputStyle={{ color: "#CCC" }}
-                        submitButtonColor="#CCC"
-                        submitButtonText="Choisir"
-                      />
-                      <View>
-                        {this.multiSelect &&
-                          this.multiSelect.getSelectedItemsExt(
-                            props.values.catOfDream
-                          )}
-                      </View>
+                    <View>
+                      {this.multiSelect &&
+                        this.multiSelect.getSelectedItemsExt(datas.catOfDream)}
                     </View>
-                    <TextField
-                      label="Coût des transports"
-                      value={props.values.costTransport}
-                      onChangeText={props.handleChange("costTransport")}
-                      containerStyle={{
-                        marginBottom: commonsStyles.spacing.unit
-                      }}
-                    />
-                    <TextField
-                      label="Hébergement"
-                      value={props.values.accommodation}
-                      onChangeText={props.handleChange("accommodation")}
-                      containerStyle={{
-                        marginBottom: commonsStyles.spacing.unit
-                      }}
-                    />
-                    <TextField
-                      label="Coût de l'hébergement"
-                      value={props.values.costAccommodation}
-                      onChangeText={props.handleChange("costAccommodation")}
-                      containerStyle={{
-                        marginBottom: commonsStyles.spacing.unit
-                      }}
-                    />
-                    <TextField
-                      label="Que faire ?"
-                      value={props.values.whatTodo}
-                      onChangeText={props.handleChange("whatTodo")}
-                      containerStyle={{
-                        marginBottom: commonsStyles.spacing.unit
-                      }}
-                    />
-                    <TextField
-                      label="Où manger ?"
-                      value={props.values.whereToEat}
-                      onChangeText={props.handleChange("whereToEat")}
-                      containerStyle={{
-                        marginBottom: commonsStyles.spacing.unit
-                      }}
-                    />
-                  </React.Fragment>
-                )}
-                <TextField
-                  label="Note"
-                  value={props.values.note}
-                  onChangeText={props.handleChange("note")}
-                  containerStyle={{
-                    marginBottom: commonsStyles.spacing.unit
-                  }}
-                />
-                <Button
-                  buttonStyle={{
-                    ...commonsStyles.button
-                  }}
-                  titleStyle={{
-                    color: commonsStyles.colors.white
-                  }}
-                  onPress={props.handleSubmit}
-                  title="Submit"
-                />
-                {messageError && <View>{this.showMessageError()}</View>}
-              </View>
-            );
-          }}
-        </Formik>
+                  </View>
+                  <View
+                    style={{
+                      flex: 1,
+                      marginTop: commonsStyles.spacing.unit * 2,
+                      borderBottomColor: "rgba(0, 0, 0, .1)",
+                      borderBottomWidth: 1,
+                      marginBottom: 0
+                    }}
+                  >
+                    <Text style={{ color: "rgba(0, 0, 0, .4)", fontSize: 15 }}>
+                      Voyage prévu ?
+                    </Text>
+                    <Picker
+                      selectedValue={datas.travel}
+                      style={{ height: 50 }}
+                      onValueChange={itemValue =>
+                        props.setFieldValue("travel", itemValue)
+                      }
+                    >
+                      <Picker.Item label="Choix..." value={null} />
+                      <Picker.Item label="Oui" value={true} />
+                      <Picker.Item label="Non" value={false} />
+                    </Picker>
+                  </View>
+                  {datas.travel && (
+                    <React.Fragment>
+                      <TextField
+                        label="Date prévue"
+                        value={datas.date ? datas.date : ""}
+                        onChangeText={props.handleChange("date")}
+                        containerStyle={{
+                          marginBottom: commonsStyles.spacing.unit
+                        }}
+                      />
+                      <View
+                        style={{
+                          flex: 1,
+                          marginTop: commonsStyles.spacing.unit * 2,
+                          marginBottom: 0
+                        }}
+                      >
+                        <MultiSelect
+                          hideTags
+                          items={this.catTrans}
+                          uniqueKey="id"
+                          ref={component => {
+                            this.multiSelect = component;
+                          }}
+                          onSelectedItemsChange={selectedItems =>
+                            props.setFieldValue("catOfTransport", selectedItems)
+                          }
+                          selectedItems={datas.catOfTransport}
+                          selectText="Choix du transport"
+                          searchInputPlaceholderText="Search Items..."
+                          onChangeInput={text => console.log(text)}
+                          altFontFamily="Roboto"
+                          tagRemoveIconColor="#CCC"
+                          tagBorderColor="#CCC"
+                          tagTextColor="#CCC"
+                          selectedItemTextColor="#CCC"
+                          selectedItemIconColor="#CCC"
+                          itemTextColor="#000"
+                          displayKey="name"
+                          searchInputStyle={{ color: "#CCC" }}
+                          submitButtonColor="#CCC"
+                          submitButtonText="Choisir"
+                        />
+                        <View>
+                          {this.multiSelect &&
+                            this.multiSelect.getSelectedItemsExt(
+                              datas.catOfDream
+                            )}
+                        </View>
+                      </View>
+                      <TextField
+                        label="Coût des transports"
+                        value={datas.costTransport ? datas.costTransport : ""}
+                        onChangeText={props.handleChange("costTransport")}
+                        containerStyle={{
+                          marginBottom: commonsStyles.spacing.unit
+                        }}
+                      />
+                      <TextField
+                        label="Hébergement"
+                        value={datas.accommodation ? datas.accommodation : ""}
+                        onChangeText={props.handleChange("accommodation")}
+                        containerStyle={{
+                          marginBottom: commonsStyles.spacing.unit
+                        }}
+                      />
+                      <TextField
+                        label="Coût de l'hébergement"
+                        value={
+                          datas.costAccommodation ? datas.costAccommodation : ""
+                        }
+                        onChangeText={props.handleChange("costAccommodation")}
+                        containerStyle={{
+                          marginBottom: commonsStyles.spacing.unit
+                        }}
+                      />
+                      <TextField
+                        label="Que faire ?"
+                        value={datas.whatTodo ? datas.whatTodo : ""}
+                        onChangeText={props.handleChange("whatTodo")}
+                        containerStyle={{
+                          marginBottom: commonsStyles.spacing.unit
+                        }}
+                      />
+                      <TextField
+                        label="Où manger ?"
+                        value={datas.whereToEat ? datas.whereToEat : ""}
+                        onChangeText={props.handleChange("whereToEat")}
+                        containerStyle={{
+                          marginBottom: commonsStyles.spacing.unit
+                        }}
+                      />
+                    </React.Fragment>
+                  )}
+                  <TextField
+                    label="Note"
+                    value={datas.note ? datas.note : ""}
+                    onChangeText={props.handleChange("note")}
+                    containerStyle={{
+                      marginBottom: commonsStyles.spacing.unit
+                    }}
+                  />
+                  <Button
+                    buttonStyle={{
+                      ...commonsStyles.button
+                    }}
+                    titleStyle={{
+                      color: commonsStyles.colors.white
+                    }}
+                    onPress={props.handleSubmit}
+                    title="Submit"
+                  />
+                  {messageError && <View>{this.showMessageError()}</View>}
+                </View>
+              );
+            }}
+          </Formik>
+        ) : (
+          <View style={commonsStyles.dream.section}>
+            <Text style={{ color: commonsStyles.colors.primary }} h4>
+              Chargement en cours ...
+            </Text>
+          </View>
+        )}
       </ScrollView>
     );
   }
 }
-
-const mapStateToProps = state => ({
-  listDreams: state.dreams.listDreams
-});
-
-const mapDispatchToProps = {};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EditCreateDreams);
+export default EditCreateDreams;
