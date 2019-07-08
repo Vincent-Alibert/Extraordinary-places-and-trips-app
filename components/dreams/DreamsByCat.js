@@ -140,7 +140,7 @@ export class DreamsByCat extends Component {
                 <Text
                   onPress={() =>
                     this.props.navigation.navigate("DFOCList", {
-                      categorie: "*"
+                      categorie: cat !== "Derniers Ajouts" ? cat : "*"
                     })
                   }
                   style={{ flex: 1, color: commonsStyles.colors.primary }}

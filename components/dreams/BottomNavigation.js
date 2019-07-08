@@ -10,7 +10,7 @@ export default class BottomNavigation extends Component {
     const modifRoute =
       routeName === "DBCDreamView"
         ? "DBCModifDream"
-        : routeName === "DBCDreamView"
+        : routeName === "DFOCDreamView"
         ? "DFOCModifDream"
         : routeName === "MapDreamView" && "MapModifDream";
     return (
