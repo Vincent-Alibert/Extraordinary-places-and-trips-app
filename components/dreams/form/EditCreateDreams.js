@@ -108,7 +108,6 @@ export class EditCreateDreams extends Component {
   submitData(values) {
     const routeName = this.props.navigation.state.routeName;
     const initDream = this.state.dream;
-
     switch (routeName) {
       case "DBCModifDream":
       case "DBCCreateDream":
@@ -119,7 +118,7 @@ export class EditCreateDreams extends Component {
         modifRoute = "DFOCDreamView";
         break;
       case "MapModifDream":
-      case "MapCreateDream":
+      case "MapDreamCreateView":
         modifRoute = "MapDreamView";
         break;
 
