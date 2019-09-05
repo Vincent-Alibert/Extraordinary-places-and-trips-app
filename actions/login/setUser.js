@@ -1,6 +1,12 @@
 import axios from "../../config/api";
 import actions from "../index-types";
 
+/**
+ * récupération d'un utilisateur
+ * @param {Objet} data
+ * @param {function} leaveError
+ * @param {function} callback
+ */
 export default function setCurrentUser(data, leaveError, callback) {
   return function(dispatch) {
     axios

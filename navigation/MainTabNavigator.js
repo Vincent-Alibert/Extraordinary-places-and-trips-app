@@ -12,6 +12,7 @@ import DreamsForOneCat from "../components/dreams/DreamsForOneCat";
 import Dream from "../components/dreams/Dream";
 import EditCreateDreams from "../components/dreams/form/EditCreateDreams";
 
+// Stack de navigation de la partie login
 const LoginStack = createStackNavigator(
   {
     LoginView: {
@@ -26,6 +27,7 @@ const LoginStack = createStackNavigator(
     headerLayoutPreset: "center"
   }
 );
+// Stack de navigation de la partie map
 const MapStack = createStackNavigator(
   {
     MapView: {
@@ -44,6 +46,7 @@ const MapStack = createStackNavigator(
   { initialRouteName: "MapView", headerLayoutPreset: "center" }
 );
 
+// Stack de navigation de la partie lieux de rêve
 const DreamsByCatStack = createStackNavigator(
   {
     DBCList: {

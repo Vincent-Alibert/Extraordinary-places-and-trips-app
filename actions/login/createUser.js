@@ -1,6 +1,12 @@
 import axios from "../../config/api";
 import actions from "../index-types";
 
+/**
+ * Creation d'un utilisateur
+ * @param {*} data
+ * @param {function} leaveError
+ * @param {function} callback
+ */
 export default function createUser(data, leaveError, callback) {
   return function(dispatch) {
     axios

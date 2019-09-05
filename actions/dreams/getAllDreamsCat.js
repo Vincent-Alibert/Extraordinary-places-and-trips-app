@@ -1,7 +1,10 @@
 import axios from "../../config/api";
-import map from "../../config/map";
 import actions from "../index-types";
 
+/**
+ * Sert à récupérer tous les rêves
+ * @param {function} leaveError
+ */
 export default function getAllDreamsCat(leaveError) {
   return function(dispatch) {
     axios
