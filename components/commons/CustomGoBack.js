@@ -1,18 +1,14 @@
-import React, { Component } from "react";
+import React from "react";
 import { TouchableHighlight } from "react-native";
 import { Icon } from "react-native-elements";
 
-export class CustomGoBack extends Component {
-  render() {
-    return (
-      <TouchableHighlight style={{ paddingLeft: 10 }}>
-        <Icon
-          name="arrow-back"
-          onPress={() => this.props.navigation.navigate("DBCList")}
-        />
-      </TouchableHighlight>
-    );
-  }
-}
+const CustomGoBack = props => (
+  <TouchableHighlight style={{ paddingLeft: 10 }}>
+    <Icon
+      name="arrow-back"
+      onPress={() => this.props.navigation.navigate("DBCList")}
+    />
+  </TouchableHighlight>
+);
 
 export default CustomGoBack;
