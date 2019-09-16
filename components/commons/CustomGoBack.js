@@ -6,7 +6,7 @@ const CustomGoBack = props => (
   <TouchableHighlight style={{ paddingLeft: 10 }}>
     <Icon
       name="arrow-back"
-      onPress={() => this.props.navigation.navigate("DBCList")}
+      onPress={() => props.navigation.navigate("DBCList")}
     />
   </TouchableHighlight>
 );
