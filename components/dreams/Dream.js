@@ -158,7 +158,7 @@ export class Dream extends Component {
                               padding: commonsStyles.spacing.unit
                             }}
                           >
-                            <Text>{cat.name}</Text>
+                            <Text>{cat}</Text>
                           </Card>
                         ))}
                       </View>

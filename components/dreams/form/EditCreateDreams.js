@@ -214,6 +214,7 @@ export class EditCreateDreams extends Component {
   render() {
     const { dream, animation } = this.state;
     const { messageError } = this.state;
+    console.log("dream :", dream);
     return (
       <ScrollView
         style={{
@@ -376,7 +377,9 @@ export class EditCreateDreams extends Component {
                       </View>
                       <TextField
                         label="Coût des transports"
-                        value={datas.costTransport ? datas.costTransport : ""}
+                        value={
+                          datas.costTransport ? `${datas.costTransport}` : ""
+                        }
                         onChangeText={props.handleChange("costTransport")}
                         containerStyle={{
                           marginBottom: commonsStyles.spacing.unit
@@ -393,7 +396,9 @@ export class EditCreateDreams extends Component {
                       <TextField
                         label="Coût de l'hébergement"
                         value={
-                          datas.costAccommodation ? datas.costAccommodation : ""
+                          datas.costAccommodation
+                            ? `${datas.costAccommodation}`
+                            : ""
                         }
                         onChangeText={props.handleChange("costAccommodation")}
                         containerStyle={{
